@@ -95,13 +95,16 @@ def signup_for_activity(activity_name: str, email: str):
     if activity_name not in activities:
         raise HTTPException(status_code=404, detail="Activity not found")
 
-    # Get the specificy activity
+    # Get the specific activity
     activity = activities[activity_name]
 
+    # Normalize email to handle case sensitivity and whitespace
+    normalized_email = email.strip().lower()
+
     # Validate that user is not already signed up
-    if email in activity["participants"]:
-        raise HTTPException(status_code=400, detail="Studen is already signed up for this activity")
+    if normalized_email in [participant.lower() for participant in activity["participants"]]:
+        raise HTTPException(status_code=400, detail="Student is already signed up for this activity")
 
     # Add student
-    activity["participants"].append(email)
-    return {"message": f"Signed up {email} for {activity_name}"}
+    activity["participants"].append(normalized_email)
+    return {"message": f"Signed up {normalized_email} for {activity_name}"}
