@@ -101,7 +101,7 @@ def signup_for_activity(activity_name: str, email: str):
     # Normalize email to handle case sensitivity and whitespace
     normalized_email = email.strip().lower()
 
-    # Validate that user is not already signed  up
+    # Validate student is not already signed up
     if normalized_email in [participant.lower() for participant in activity["participants"]]:
         raise HTTPException(status_code=400, detail="Student is already signed up for this activity")
 
